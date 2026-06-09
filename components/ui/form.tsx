@@ -2,6 +2,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import {
   Controller,
+  FormProvider,
   ControllerProps,
   FieldPath,
   FieldValues,
@@ -11,12 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
-const Form = <TFieldValues extends FieldValues = FieldValues>(
-  props: React.ComponentProps<typeof FormProvider<TFieldValues>>
-) => {
-  const { FormProvider } = require("react-hook-form"); // Dynamic import to avoid circular dependency
-  return <FormProvider {...props} />;
-};
+const Form = FormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -49,9 +45,9 @@ const useFormField = () => {
 
   const fieldState = getFieldState(fieldContext.name, formState);
 
-  if (!fieldContext) {
-    throw new Error("useFormField should be used within <FormField>");
-  }
+  if (!fieldContext?.name) {
+  throw new Error("useFormField should be used within <FormField>");
+}
 
   const { id } = itemContext;
 
